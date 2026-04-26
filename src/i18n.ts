@@ -32,6 +32,14 @@ export interface Dict {
     linkGoal: string;
     suggestBehind: string;
     suggestAhead: string;
+    category: string;
+    categoryAll: string;
+    categoryNone: string;
+    categories: Record<
+      'career' | 'finance' | 'health' | 'learning' |
+      'relationships' | 'lifestyle' | 'mindset' | 'other',
+      string
+    >;
   };
   addExpense: string;
   editExpense: string;
@@ -192,6 +200,19 @@ export const dict: Record<Lang, Dict> = {
       linkGoal: 'Goal',
       suggestBehind: 'Linked tasks suggest behind. Mark off-track?',
       suggestAhead: 'Linked tasks look healthy.',
+      category: 'Life area',
+      categoryAll: 'All areas',
+      categoryNone: 'Unassigned',
+      categories: {
+        career: 'Career',
+        finance: 'Finance',
+        health: 'Health',
+        learning: 'Learning',
+        relationships: 'Relationships',
+        lifestyle: 'Lifestyle',
+        mindset: 'Mindset',
+        other: 'Other',
+      },
     },
     addExpense: 'Add expense',
     editExpense: 'Edit expense',
@@ -359,6 +380,19 @@ export const dict: Record<Lang, Dict> = {
       linkGoal: 'Ziel',
       suggestBehind: 'Verknüpfte Aufgaben sehen rückständig aus. Vom Kurs markieren?',
       suggestAhead: 'Verknüpfte Aufgaben sehen gut aus.',
+      category: 'Lebensbereich',
+      categoryAll: 'Alle Bereiche',
+      categoryNone: 'Nicht zugeordnet',
+      categories: {
+        career: 'Karriere',
+        finance: 'Finanzen',
+        health: 'Gesundheit',
+        learning: 'Lernen',
+        relationships: 'Beziehungen',
+        lifestyle: 'Lebensstil',
+        mindset: 'Mindset',
+        other: 'Sonstiges',
+      },
     },
     addExpense: 'Ausgabe hinzufügen',
     editExpense: 'Ausgabe bearbeiten',

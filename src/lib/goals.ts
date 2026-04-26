@@ -1,6 +1,23 @@
-import type { Goal, GoalTimeframe, Plan } from '../types';
+import type { Goal, GoalCategory, GoalTimeframe, Plan } from '../types';
 
 export const TIMEFRAMES: GoalTimeframe[] = ['year', 'quarter', 'month', 'week'];
+
+// Wheel of Life — 8 life domains used for categorizing personal goals.
+export const CATEGORIES: GoalCategory[] = [
+  'career', 'finance', 'health', 'learning',
+  'relationships', 'lifestyle', 'mindset', 'other',
+];
+
+export const CATEGORY_GLYPH: Record<GoalCategory, string> = {
+  career: '💼',
+  finance: '💰',
+  health: '💪',
+  learning: '📚',
+  relationships: '💞',
+  lifestyle: '🌿',
+  mindset: '🧘',
+  other: '✨',
+};
 
 // rank: lower = larger timeframe (parent must be lower-or-equal)
 export const TIMEFRAME_RANK: Record<GoalTimeframe, number> = {

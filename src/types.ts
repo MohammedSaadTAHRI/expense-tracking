@@ -29,6 +29,11 @@ export interface Plan {
 export type GoalTimeframe = 'year' | 'quarter' | 'month' | 'week';
 export type GoalStatus = 'on-track' | 'off-track-plan' | 'off-track-no-plan';
 
+// Wheel of Life domains — validated framework for life-area goal categorization.
+export type GoalCategory =
+  | 'career' | 'finance' | 'health' | 'learning'
+  | 'relationships' | 'lifestyle' | 'mindset' | 'other';
+
 export interface Goal {
   id: string;
   title: string;
@@ -37,6 +42,7 @@ export interface Goal {
   timeframe: GoalTimeframe;
   periodKey: string;         // year=YYYY, quarter=YYYY-Q#, month=YYYY-MM, week=YYYY-W##
   parentId?: string;         // link to larger-timeframe goal
+  category?: GoalCategory;   // life-area domain (Wheel of Life)
   status: GoalStatus;
   recoveryPlan?: string;     // required when status=off-track-plan
   createdAt: string;         // ISO date

@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { Dict } from '../i18n';
-import type { Goal, GoalStatus, GoalTimeframe, Plan } from '../types';
+import type { Goal, GoalCategory, GoalStatus, GoalTimeframe, Plan } from '../types';
 import { uid } from '../storage';
 import {
+  CATEGORIES, CATEGORY_GLYPH,
   TIMEFRAMES, TIMEFRAME_RANK,
   canParent, formatPeriodKey, periodKeyFor, progressFor, suggestStatus,
 } from '../lib/goals';
@@ -27,6 +28,7 @@ const STATUS_META: Record<GoalStatus, { glyph: string; cls: string; key: StatusL
 
 export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }: Props) {
   const [filter, setFilter] = useState<'' | GoalTimeframe>('');
+  const [catFilter, setCatFilter] = useState<'' | GoalCategory>('');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [title, setTitle] = useState('');
   const [why, setWhy] = useState('');
@@ -34,6 +36,7 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
   const [timeframe, setTimeframe] = useState<GoalTimeframe>('quarter');
   const [periodKey, setPeriodKey] = useState<string>(periodKeyFor('quarter'));
   const [parentId, setParentId] = useState<string>('');
+  const [category, setCategory] = useState<'' | GoalCategory>('');
   const [status, setStatus] = useState<GoalStatus>('on-track');
   const [recoveryPlan, setRecoveryPlan] = useState('');
 
@@ -41,7 +44,7 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
     setEditingId(null);
     setTitle(''); setWhy(''); setIntention('');
     setTimeframe('quarter'); setPeriodKey(periodKeyFor('quarter'));
-    setParentId(''); setStatus('on-track'); setRecoveryPlan('');
+    setParentId(''); setCategory(''); setStatus('on-track'); setRecoveryPlan('');
   };
 
   const onTimeframeChange = (tf: GoalTimeframe) => {
@@ -56,6 +59,7 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
     intention: intention || undefined,
     timeframe, periodKey,
     parentId: parentId || undefined,
+    category: category || undefined,
     status,
     recoveryPlan: status === 'off-track-plan' ? (recoveryPlan || undefined) : undefined,
     createdAt: '',
@@ -89,6 +93,7 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
     setTimeframe(g.timeframe);
     setPeriodKey(g.periodKey);
     setParentId(g.parentId ?? '');
+    setCategory(g.category ?? '');
     setStatus(g.status);
     setRecoveryPlan(g.recoveryPlan ?? '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -107,14 +112,15 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
   const goalsById = useMemo(() => Object.fromEntries(goals.map(g => [g.id, g])), [goals]);
 
   const sorted = useMemo(() => {
-    const filtered = filter ? goals.filter(g => g.timeframe === filter) : goals;
+    let filtered = filter ? goals.filter(g => g.timeframe === filter) : goals;
+    if (catFilter) filtered = filtered.filter(g => (g.category ?? 'other') === catFilter);
     return filtered.slice().sort((a, b) => {
       const tr = TIMEFRAME_RANK[a.timeframe] - TIMEFRAME_RANK[b.timeframe];
       if (tr !== 0) return tr;
       if (a.periodKey !== b.periodKey) return a.periodKey.localeCompare(b.periodKey);
       return a.createdAt.localeCompare(b.createdAt);
     });
-  }, [goals, filter]);
+  }, [goals, filter, catFilter]);
 
   return (
     <section className="stack">
@@ -134,6 +140,23 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
               className={`pill sm ${filter === tf ? 'pill-on' : ''}`}
               onClick={() => setFilter(tf)}
             >{t.goals.timeframes[tf]}</button>
+          ))}
+        </div>
+        <div className="row goal-filter goal-cat-filter" role="tablist" aria-label={t.goals.category}>
+          <button
+            type="button"
+            className={`pill sm ${catFilter === '' ? 'pill-on' : ''}`}
+            onClick={() => setCatFilter('')}
+          >{t.goals.categoryAll}</button>
+          {CATEGORIES.map(c => (
+            <button
+              key={c}
+              type="button"
+              className={`pill sm ${catFilter === c ? 'pill-on' : ''}`}
+              onClick={() => setCatFilter(c)}
+            >
+              <span className="cat-glyph" aria-hidden="true">{CATEGORY_GLYPH[c]}</span> {t.goals.categories[c]}
+            </button>
           ))}
         </div>
       </div>
@@ -164,6 +187,17 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
             />
           </label>
         </div>
+        <label className="select-label">
+          <span>{t.goals.category}</span>
+          <select value={category} onChange={e => setCategory(e.target.value as '' | GoalCategory)}>
+            <option value="">{t.goals.categoryNone}</option>
+            {CATEGORIES.map(c => (
+              <option key={c} value={c}>
+                {CATEGORY_GLYPH[c]} {t.goals.categories[c]}
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="select-label">
           <span>{t.goals.parent}</span>
           <select value={parentId} onChange={e => setParentId(e.target.value)}>
@@ -231,6 +265,11 @@ export default function GoalsView({ t, goals, plans, onAdd, onUpdate, onDelete }
                 <div className="goal-title-block">
                   <div className="goal-meta-top">
                     <span className={`chip chip-tf-${g.timeframe}`}>{t.goals.timeframes[g.timeframe]}</span>
+                    {g.category && (
+                      <span className={`chip chip-cat-${g.category}`}>
+                        <span aria-hidden="true">{CATEGORY_GLYPH[g.category]}</span> {t.goals.categories[g.category]}
+                      </span>
+                    )}
                     <span className="goal-period">{formatPeriodKey(g.timeframe, g.periodKey, t.months)}</span>
                     {parent && (
                       <span className="goal-parent" title={parent.title}>↑ {parent.title}</span>

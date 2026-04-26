@@ -1326,6 +1326,18 @@ html[data-theme='dark'] .toast { background: #271a2d; }
 .chip-tf-month   { background: color-mix(in oklab, var(--gold) 18%, transparent); border-color: color-mix(in oklab, var(--gold) 40%, transparent); color: color-mix(in oklab, var(--gold) 80%, var(--text)); }
 .chip-tf-week    { background: color-mix(in oklab, var(--c-health) 18%, transparent); border-color: color-mix(in oklab, var(--c-health) 40%, transparent); color: color-mix(in oklab, var(--c-health) 85%, var(--text)); }
 
+.chip-cat-career        { background: color-mix(in oklab, var(--primary) 18%, transparent); border-color: color-mix(in oklab, var(--primary) 40%, transparent); color: color-mix(in oklab, var(--primary) 80%, var(--text)); }
+.chip-cat-finance       { background: color-mix(in oklab, var(--gold) 18%, transparent); border-color: color-mix(in oklab, var(--gold) 40%, transparent); color: color-mix(in oklab, var(--gold) 80%, var(--text)); }
+.chip-cat-health        { background: color-mix(in oklab, var(--c-health) 18%, transparent); border-color: color-mix(in oklab, var(--c-health) 40%, transparent); color: color-mix(in oklab, var(--c-health) 80%, var(--text)); }
+.chip-cat-learning      { background: color-mix(in oklab, var(--accent) 18%, transparent); border-color: color-mix(in oklab, var(--accent) 40%, transparent); color: color-mix(in oklab, var(--accent) 80%, var(--text)); }
+.chip-cat-relationships { background: color-mix(in oklab, var(--c-beauty) 18%, transparent); border-color: color-mix(in oklab, var(--c-beauty) 40%, transparent); color: color-mix(in oklab, var(--c-beauty) 75%, var(--text)); }
+.chip-cat-lifestyle     { background: color-mix(in oklab, var(--c-travel) 18%, transparent); border-color: color-mix(in oklab, var(--c-travel) 40%, transparent); color: color-mix(in oklab, var(--c-travel) 75%, var(--text)); }
+.chip-cat-mindset       { background: color-mix(in oklab, var(--c-fashion) 18%, transparent); border-color: color-mix(in oklab, var(--c-fashion) 40%, transparent); color: color-mix(in oklab, var(--c-fashion) 75%, var(--text)); }
+.chip-cat-other         { background: color-mix(in oklab, var(--c-other) 18%, transparent); border-color: color-mix(in oklab, var(--c-other) 40%, transparent); color: color-mix(in oklab, var(--c-other) 80%, var(--text)); }
+
+.goal-cat-filter { margin-top: 0.4rem; }
+.goal-cat-filter .pill .cat-glyph { margin-right: 0.25rem; }
+
 .goal-status-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .status-pill {
   border: 1px solid var(--border);
