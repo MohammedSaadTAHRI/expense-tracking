@@ -70,6 +70,7 @@ export interface RecurringPlan {
   startDate: string;
   durationDays?: number; // occurrence length; default 0 (same day)
   frequency: PlanFrequency;
+  goalId?: string;
 }
 
 export type Budgets = Partial<Record<CategoryKey, number>>;

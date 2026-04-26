@@ -89,17 +89,18 @@ const ScheduleView = forwardRef<ScheduleHandle, Props>(function ScheduleView(
         sourceId: prev?.sourceId,
         goalId: linkedGoal,
       });
+    } else if (repeat) {
+      // Recurring: only create template. Materialize creates startDate instance + future ones.
+      const d = parseInt(duration || '0', 10);
+      onAddRecurring({
+        id: uid(), task, notes: trimmedNotes, time, endTime,
+        startDate: selected,
+        durationDays: Number.isFinite(d) && d > 0 ? d : undefined,
+        frequency: repeat,
+        goalId: linkedGoal,
+      });
     } else {
       onAdd({ id: uid(), task, notes: trimmedNotes, date: selected, endDate, time, endTime, done: false, goalId: linkedGoal });
-      if (repeat) {
-        const d = parseInt(duration || '0', 10);
-        onAddRecurring({
-          id: uid(), task, notes: trimmedNotes, time, endTime,
-          startDate: selected,
-          durationDays: Number.isFinite(d) && d > 0 ? d : undefined,
-          frequency: repeat,
-        });
-      }
     }
     reset();
   };

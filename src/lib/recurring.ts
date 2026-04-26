@@ -109,6 +109,7 @@ export function materializePlans(
         endDate,
         done: false,
         sourceId: t.id,
+        goalId: t.goalId,
       });
     }
   }

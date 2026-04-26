@@ -68,14 +68,14 @@ const ExpensesView = forwardRef<ExpensesHandle, Props>(function ExpensesView(
     const trimmedNotes = notes.trim() || undefined;
     if (editingId) {
       onUpdate({ id: editingId, desc, notes: trimmedNotes, amount: n, category, date });
+    } else if (repeat) {
+      // Recurring: only create template. Materialize creates startDate instance + future ones.
+      onAddRecurring({
+        id: uid(), desc, notes: trimmedNotes, amount: n, category,
+        startDate: date, frequency: repeat,
+      });
     } else {
       onAdd({ id: uid(), desc, notes: trimmedNotes, amount: n, category, date });
-      if (repeat) {
-        onAddRecurring({
-          id: uid(), desc, notes: trimmedNotes, amount: n, category,
-          startDate: date, frequency: repeat,
-        });
-      }
     }
     reset();
   };
