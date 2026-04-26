@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(npx vite *)",
+      "Bash(echo \"pid=$!\" sleep 3 curl -s http://127.0.0.1:5180/)",
+      "Bash(curl -s http://127.0.0.1:5180/)",
+      "Bash(kill 509)"
+    ]
+  }
+}
